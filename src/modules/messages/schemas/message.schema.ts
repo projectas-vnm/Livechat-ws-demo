@@ -7,6 +7,9 @@ export class Message extends Base {
     sender_id: string;
 
     @Prop({ required: true })
+    sender_type: string;
+
+    @Prop({ required: true })
     content: string;
 
     @Prop({ required: true })
@@ -17,9 +20,6 @@ export class Message extends Base {
 
     @Prop()
     reply_to_message: string;
-
-    @Prop({ required: true })
-    message_type: string;
 }
 
 export const MessageSchema = SchemaFactory.createForClass(Message);
