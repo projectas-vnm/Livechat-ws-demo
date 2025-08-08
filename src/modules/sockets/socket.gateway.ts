@@ -81,8 +81,6 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
     async handleRoomMessage(@ConnectedSocket() client: Socket, @MessageBody() payload: MessageDto) {
         const { conversationId } = payload;
 
-        await this.messageService.InsertMessage(payload);
-
         this.server.to(conversationId).emit(SOCKET_EVENTS.RECV_MESSAGE, payload);
     }
 }

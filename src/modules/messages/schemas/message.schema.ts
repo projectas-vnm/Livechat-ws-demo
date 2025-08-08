@@ -4,6 +4,9 @@ import { Base } from "src/libs/dtos/_base.dto";
 @Schema({ timestamps: true })
 export class Message extends Base {
     @Prop({ required: true })
+    sender_id: string;
+
+    @Prop({ required: true })
     content: string;
 
     @Prop({ required: true })
@@ -14,6 +17,9 @@ export class Message extends Base {
 
     @Prop()
     reply_to_message: string;
+
+    @Prop({ required: true })
+    message_type: string;
 }
 
 export const MessageSchema = SchemaFactory.createForClass(Message);
