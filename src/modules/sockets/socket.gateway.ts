@@ -7,12 +7,15 @@ import {
     WebSocketGateway,
     WebSocketServer
 } from "@nestjs/websockets";
+import { UseFilters } from "@nestjs/common";
 import { Server, Socket } from "socket.io";
 import { MessageDto } from "src/modules/messages/dtos/message.dto";
 import { MessageService } from "src/modules/messages/message.service";
+import { GlobalWsExceptionFilter } from "src/libs/exceptions/global.exception";
 import { SOCKET_EVENTS } from "./constants/socket-events.constant";
 
 @WebSocketGateway({ cors: { origin: "*" } })
+@UseFilters(GlobalWsExceptionFilter)
 export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @WebSocketServer() server: Server;
 
