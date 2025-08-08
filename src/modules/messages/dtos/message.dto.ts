@@ -3,11 +3,11 @@ export class MessageDto {
     content: string;
 
     // Loại nội dung tin nhắn
-    content_type: string;
+    contentType: string;
 
     // Id đoạn hội thoại
-    conversation_id: string;
+    conversationId: string;
 
     // Id tin nhắn trả lời
-    reply_to_message: string;
+    replyToMessage: string;
 };
