@@ -8,5 +8,7 @@ export const SOCKET_EVENTS = {
 
     RECV_ROOM_UPDATE: "recvRoomUpdate",
     RECV_MESSAGE: "recvMessage",
-    RECV_MESSAGE_UPDATE: "recvMessageUpdate"
+    RECV_MESSAGE_UPDATE: "recvMessageUpdate",
+
+    ROOM_ME_JOIN: "roomMeJoin"
 };

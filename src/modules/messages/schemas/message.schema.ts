@@ -4,7 +4,7 @@ import {
     SchemaFactory
 } from "@nestjs/mongoose";
 import { HydratedDocument } from "mongoose";
-import { Base } from "src/commons/dtos/_base.dto";
+import { Base } from "src/commons/schemas/_base.schemas";
 
 @Schema({ timestamps: true })
 export class Message extends Base {

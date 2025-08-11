@@ -1,4 +1,4 @@
-export class Base {
+export class BaseDto {
     _id: string;
 
     // Thời gian tạo
