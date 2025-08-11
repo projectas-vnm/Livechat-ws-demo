@@ -1,4 +1,4 @@
-export class MessageDto {
+export class CreateMessageDto {
     // Người gửi
     senderName: string;
 

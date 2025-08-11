@@ -1,5 +1,4 @@
 export class Base {
-    // Id
     _id: string;
 
     // Thời gian tạo

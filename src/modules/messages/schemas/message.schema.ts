@@ -1,25 +1,32 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import {
+    Prop,
+    Schema,
+    SchemaFactory
+} from "@nestjs/mongoose";
+import { HydratedDocument } from "mongoose";
 import { Base } from "src/commons/dtos/_base.dto";
 
 @Schema({ timestamps: true })
 export class Message extends Base {
     @Prop({ required: true })
-    sender_id: string;
+    senderId: string;
 
     @Prop({ required: true })
-    sender_type: string;
+    senderType: string;
 
     @Prop({ required: true })
     content: string;
 
     @Prop({ required: true })
-    content_type: string;
+    contentType: string;
 
     @Prop({ required: true })
-    conversation_id: string;
+    conversationId: string;
 
     @Prop()
-    reply_to_message: string;
+    replyToMessage: string;
 }
+
+export type MessageDocument = HydratedDocument<Message>;
 
 export const MessageSchema = SchemaFactory.createForClass(Message);

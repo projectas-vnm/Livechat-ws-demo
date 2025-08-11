@@ -10,6 +10,10 @@ export function getJoinRoomPatternHashing(conversationId: string): string {
     return `joinRoom:${conversationId}`;
 }
 
-export function getMessagePatternHashing(content: string, contentType: string, conversationId: string): string {
+export function getMessagePatternHashing(
+    content: string,
+    contentType: string,
+    conversationId: string
+): string {
     return `message:${content}&${contentType}&${conversationId}`;
 }

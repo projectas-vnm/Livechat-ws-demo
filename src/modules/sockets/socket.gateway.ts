@@ -9,7 +9,7 @@ import {
 } from "@nestjs/websockets";
 import { UseFilters } from "@nestjs/common";
 import { Server, Socket } from "socket.io";
-import { MessageDto } from "src/modules/messages/dtos/message.dto";
+import { CreateMessageDto } from "src/modules/messages/dtos/create-message.dto";
 import { MessageService } from "src/modules/messages/message.service";
 import { GlobalWsExceptionFilter } from "src/commons/exceptions/global.exception";
 import { SOCKET_EVENTS } from "./constants/socket-events.constant";
@@ -81,8 +81,10 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
      * @param payload Dữ liệu của gửi lên
      */
     @SubscribeMessage(SOCKET_EVENTS.SEND_MESSAGE)
-    async handleRoomMessage(@ConnectedSocket() client: Socket, @MessageBody() payload: MessageDto) {
+    async handleRoomMessage(@ConnectedSocket() client: Socket, @MessageBody() payload: CreateMessageDto) {
         const { conversationId } = payload;
+
+        await this.messageService.InsertMessage(payload);
 
         this.server.to(conversationId).emit(SOCKET_EVENTS.RECV_MESSAGE, payload);
     }
