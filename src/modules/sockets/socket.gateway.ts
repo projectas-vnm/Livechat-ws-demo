@@ -13,6 +13,8 @@ import { CreateMessageDto } from "src/modules/messages/dtos/create-message.dto";
 import { MessageService } from "src/modules/messages/message.service";
 import { GlobalWsExceptionFilter } from "src/commons/exceptions/global.exception";
 import { SOCKET_EVENTS } from "./constants/socket-events.constant";
+import { CreateConversationDto } from "../conversations/dtos/create-conversation.dto";
+import { ConversationService } from "../conversations/conversation.service";
 
 @WebSocketGateway({ cors: { origin: "*" } })
 @UseFilters(GlobalWsExceptionFilter)
@@ -22,7 +24,10 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
     private authenticatedClients = new Set<string>();
     private authTimeouts = new Map<string, NodeJS.Timeout>();
 
-    constructor(private readonly messageService: MessageService) { }
+    constructor(
+        private readonly messageService: MessageService,
+        private readonly conversationService: ConversationService
+    ) { }
 
     /**
      * Khi client kết nối
@@ -59,9 +64,14 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
      * @param payload Dữ liệu của gửi lên
      */
     @SubscribeMessage(SOCKET_EVENTS.ROOM_JOIN)
-    async handleRoomJoin(@ConnectedSocket() client: Socket, @MessageBody() payload: { room: string }) {
-        const { room } = payload;
-        await client.join(room);
+    async handleRoomJoin(@ConnectedSocket() client: Socket, @MessageBody() payload: CreateConversationDto) {
+        const { conversationId } = payload;
+
+        const conversationInfo = await this.conversationService.upsertConversation(payload);
+
+        await client.join(conversationId);
+
+        this.server.to(conversationId).emit(SOCKET_EVENTS.RECV_ROOM_UPDATE, conversationInfo);
     }
 
     /**
