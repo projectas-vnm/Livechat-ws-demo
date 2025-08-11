@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Base } from "src/libs/dtos/_base.dto";
+import { Base } from "src/commons/dtos/_base.dto";
 
 @Schema({ timestamps: true })
 export class Message extends Base {
