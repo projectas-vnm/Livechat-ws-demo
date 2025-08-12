@@ -1,3 +1,5 @@
+import { IsOptional } from "class-validator";
+
 export class CreateMessageDto {
     // Người gửi
     senderName: string;
@@ -6,6 +8,7 @@ export class CreateMessageDto {
     senderId: string;
 
     // Loại tin nhắn
+    @IsOptional()
     senderType: string;
 
     // Nội dung tin nhắn
@@ -18,5 +21,6 @@ export class CreateMessageDto {
     conversationId: string;
 
     // Id tin nhắn trả lời
+    @IsOptional()
     replyToMessage: string;
 };
