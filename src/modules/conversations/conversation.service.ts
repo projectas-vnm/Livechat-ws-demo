@@ -35,4 +35,9 @@ export class ConversationService {
 
         return response;
     }
+
+    async getConversationInfo(conversationId: string): Promise<GetConversationInfoDto> {
+        const response = new GetConversationInfoDto();
+        return response;
+    }
 }

@@ -13,7 +13,6 @@ import { CreateMessageDto } from "src/modules/messages/dtos/create-message.dto";
 import { MessageService } from "src/modules/messages/message.service";
 import { GlobalWsExceptionFilter } from "src/commons/exceptions/global.exception";
 import { SOCKET_EVENTS } from "./constants/socket-events.constant";
-import { CreateConversationDto } from "../conversations/dtos/create-conversation.dto";
 import { ConversationService } from "../conversations/conversation.service";
 
 @WebSocketGateway({ cors: { origin: "*" } })
@@ -64,14 +63,12 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
      * @param payload Dữ liệu của gửi lên
      */
     @SubscribeMessage(SOCKET_EVENTS.ROOM_JOIN)
-    async handleRoomJoin(@ConnectedSocket() client: Socket, @MessageBody() payload: CreateConversationDto) {
+    async handleRoomJoin(@ConnectedSocket() client: Socket, @MessageBody() payload: { conversationId: string }) {
         const { conversationId } = payload;
-
-        const conversationInfo = await this.conversationService.upsertConversation(payload);
 
         await client.join(conversationId);
 
-        this.server.to(conversationId).emit(SOCKET_EVENTS.RECV_ROOM_UPDATE, conversationInfo);
+        //this.server.to(conversationId).emit(SOCKET_EVENTS.RECV_ROOM_UPDATE, conversationInfo);
     }
 
     /**
@@ -80,9 +77,10 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
      * @param payload Dữ liệu của gửi lên
      */
     @SubscribeMessage(SOCKET_EVENTS.ROOM_LEAVE)
-    async handleRoomLeave(@ConnectedSocket() client: Socket, @MessageBody() payload: { room: string }) {
-        const { room } = payload;
-        await client.leave(room);
+    async handleRoomLeave(@ConnectedSocket() client: Socket, @MessageBody() payload: { conversationId: string }) {
+        const { conversationId } = payload;
+
+        await client.leave(conversationId);
     }
 
     /**
@@ -94,7 +92,7 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
     async handleRoomMessage(@ConnectedSocket() client: Socket, @MessageBody() payload: CreateMessageDto) {
         const { conversationId } = payload;
 
-        await this.messageService.InsertMessage(payload);
+        //await this.messageService.InsertMessage(payload);
 
         this.server.to(conversationId).emit(SOCKET_EVENTS.RECV_MESSAGE, payload);
     }
